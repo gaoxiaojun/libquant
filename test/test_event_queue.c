@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include "../src/quant_event_queue.h"
 #include "../src/quant_event.h"
-#include <assert.h>
 
 #define TEST_COUNT 10000000
 
@@ -23,6 +22,6 @@ int main()
        QuantEvent* e = quant_event_queue_pop(queue);
        quant_event_unref(e);
    }
-    assert(event->refcount == 1);
+    g_assert(event->refcount == 1);
     return 0;
 }
