@@ -63,6 +63,9 @@ typedef enum {
 #define QUANT_EVENT_IS_SERVICE(event)   !!(QUANT_EVENT_TYPE(event) & QUANT_EVENT_TYPE_SERVICE)
 #define QUANT_EVENT_IS_REMINDER(event)  !!(QUANT_EVENT_TYPE(event) & QUANT_EVENT_TYPE_REMINDER)
 
+#define QUANT_EVENT_REF_INIT(event)     (QUANT_EVENT_CAST(event)->refcount = 1)
+#define QUANT_EVENT_REF(event)          (quant_event_ref(QUANT_EVENT_CAST(event)))
+#define QUANT_EVENT_UNREF(event)        (quant_event_unref(QUANT_EVENT_CAST(event)))
 
 typedef  struct _QuantEvent QuantEvent;
 

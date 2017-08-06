@@ -31,7 +31,8 @@ typedef enum {
     QUANT_EVENT_BUS_EXCHANGE_CLOCK
 }QuantEventBusPipe;
 
-/* */
+//TODO:event lifetime
+
 #define LOG_OUT_OF_ORDER(t, e) g_log("EVENTBUS", G_LOG_LEVEL_ERROR, "out of time order")
 static QuantEvent* simulator_dequeue(QuantEventBus* bus)
 {
@@ -156,10 +157,11 @@ QuantEventBus *quant_event_bus_new(QuantEventLoop *loop)
     QuantEventBus * bus = g_new0(QuantEventBus, 1);
     if (bus != NULL) {
         for (int i = 0; i < 6; i++) {
-            bus->queue[i] = quant_event_queue_new(1024);
+            bus->queue[i] = quant_event_queue_new();
             if (bus->queue[i] == NULL)
                 goto bad_alloc;
         }
+        bus->loop = loop;
     }
     return bus;
 bad_alloc:
@@ -251,7 +253,7 @@ void quant_event_bus_set_exchange_datetime(QuantEventBus *bus, datetime_t time)
 }
 
 
-QuantEvent * quant_event_bus_next_event(QuantEventBus *bus)
+QuantEvent * quant_event_bus_pop(QuantEventBus *bus)
 {
     if (bus->mode == QUANT_EVENT_BUS_SIMUALTOR_MODE)
         return simulator_dequeue(bus);

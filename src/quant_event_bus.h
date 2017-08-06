@@ -60,7 +60,7 @@ QUANT_EXPORT
 void quant_event_bus_set_exchange_datetime(QuantEventBus *bus, datetime_t time);
 
 QUANT_EXPORT
-QuantEvent * quant_event_bus_next_event(QuantEventBus *bus);
+QuantEvent * quant_event_bus_pop(QuantEventBus *bus);
 
 QUANT_EXPORT
 timespan_t quant_event_bus_next_timeout(QuantEventBus *bus);

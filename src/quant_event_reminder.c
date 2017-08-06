@@ -15,6 +15,7 @@ QuantReminderEvent *quant_event_new_reminder(QuantReminderEventClockType ctype, 
         revent->clock_type = ctype;
         revent->callback = callback;
         revent->user_data = data;
+        QUANT_EVENT_REF_INIT(revent);
     }
 
     return revent;

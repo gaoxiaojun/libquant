@@ -21,7 +21,7 @@ G_BEGIN_DECLS
 typedef struct _QuantEventQueue QuantEventQueue;
 
 QUANT_EXPORT
-QuantEventQueue * quant_event_queue_new() G_GNUC_MALLOC;
+QuantEventQueue * quant_event_queue_new(void) G_GNUC_MALLOC;
 
 QUANT_EXPORT
 void quant_event_queue_ref (QuantEventQueue *queue);
