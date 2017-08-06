@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../src/quant_mpmc_queue.h"
+#include "../src/quant_event_queue.h"
 #include "../src/quant_event.h"
 #include <assert.h>
 
@@ -12,17 +12,17 @@ int main()
     QuantEvent *event = malloc(sizeof(QuantEvent));
     quant_event_init(event);
 
-    QuantAtomicQueue *queue = quant_atomic_queue_new(1024 * 128);
+    QuantEventQueue *queue = quant_event_queue_new();
 
     for (int i = 0; i < TEST_COUNT; i++) {
         quant_event_ref(event);
-        quant_atomic_queue_push(queue, event);
+        quant_event_queue_push(queue, event);
     }
 
    for (int i = 0; i < TEST_COUNT; i++) {
-       QuantEvent* e = quant_atomic_queue_pop(queue);
+       QuantEvent* e = quant_event_queue_pop(queue);
        quant_event_unref(e);
-   } 
+   }
     assert(event->refcount == 1);
     return 0;
 }
