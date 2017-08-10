@@ -38,7 +38,7 @@ void quant_event_queue_unref (QuantEventQueue *queue);
  * @result < 0 mean error -1 ENOMEM -2 EDUPLICATE -3 EPARAM
  * other is id
  */
-QUANT_EXPORT int quant_event_queue_push(QuantEventQueue* q, QuantEvent* e);
+QUANT_EXPORT guint64 quant_event_queue_push(QuantEventQueue* q, QuantEvent* e);
 
 /*
  * return NULL means no event in queue

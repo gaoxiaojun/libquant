@@ -21,8 +21,8 @@ QUANT_BEGIN_DECLS
    12:00 AM January 1, year 1 A.D (as Day 0). in the proleptic Gregorian Calendar.
 */
 
-typedef uint64_t datetime_t;
-typedef int64_t  timespan_t;
+typedef guint64 datetime_t;
+typedef gint64  timespan_t;
 
 #define QUANT_TICKS_PER_SECOND  UINT64_C(1000000)
 #define QUANT_TICKS_PER_DAY     UINT64_C(86400000000)

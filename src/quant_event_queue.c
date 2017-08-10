@@ -47,7 +47,7 @@ RB_GENERATE_STATIC(event_tree_s, event_node_s, rbentry, event_node_compare)
 
 /* for custom node alloc and free */
 static inline event_node_t* node_new() {
-        return calloc(1, sizeof(event_node_t));//, 1);
+        return calloc(1, sizeof(event_node_t));
 }
 
 static inline void node_free(event_node_t* node) {
@@ -120,7 +120,7 @@ void quant_event_queue_unref (QuantEventQueue *queue)
  * if malloc failed return ENOMEM
  * other return 0
  */
-int quant_event_queue_push(QuantEventQueue* q, QuantEvent* e)
+guint64 quant_event_queue_push(QuantEventQueue* q, QuantEvent* e)
 {
     g_return_val_if_fail( e != NULL, EPARAM);
     g_return_val_if_fail (q != NULL, EPARAM);
