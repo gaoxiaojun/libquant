@@ -94,6 +94,7 @@ typedef QuantEvent* (*quant_event_clone)(QuantEvent* e);
 typedef void (*quant_event_default_process)(QuantEvent* e);
 
 typedef struct _QuantEventClassInfo {
+    QuantEventFlags flag;
     size_t size;
     quant_event_init init;
     quant_event_destory destory;

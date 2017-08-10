@@ -43,7 +43,7 @@ QUANT_EXPORT guint64 quant_event_queue_push(QuantEventQueue* q, QuantEvent* e);
 /*
  * return NULL means no event in queue
  */
-QUANT_EXPORT QuantEvent* quant_event_queue_pop(QuantEventQueue* q);
+QUANT_EXPORT QuantEvent* quant_event_queue_pop(QuantEventQueue* q, guint64* idptr);
 
 QUANT_EXPORT QuantEvent* quant_event_queue_peek(QuantEventQueue* q);
 

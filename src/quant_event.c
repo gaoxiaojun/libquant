@@ -81,6 +81,7 @@ QuantEvent* quant_event_malloc(QuantEventType type)
     QuantEvent* e = malloc(_eventclassinfo[type].size);
     if (e) {
         e->type = type;
+        e->flag = _eventclassinfo[type].flag;
         e->refcount = 1;
     }
     return e;
@@ -107,24 +108,28 @@ QuantEventClassInfo _eventclassinfo[QUANT_EVENT_LAST] = {
         .init = (quant_event_init)quant_event_reminder_init,
         .destory = NULL,
         .clone = NULL,
-        .size = sizeof(QuantReminderEvent)
+        .size = sizeof(QuantReminderEvent),
+        .flag = QUANT_FLAG_REMINDER
     },
     { // ASK
         .init = (quant_event_init)quant_event_tick_init,
         .destory = NULL,
         .clone = NULL,
-        .size = sizeof(QuantAskEvent)
+        .size = sizeof(QuantAskEvent),
+        .flag = QUANT_FLAG_MARKET | QUANT_FLAG_TICK
     },
     { // BID
         .init = (quant_event_init)quant_event_tick_init,
         .destory = NULL,
         .clone = NULL,
-        .size = sizeof(QuantBidEvent)
+        .size = sizeof(QuantBidEvent),
+        .flag = QUANT_FLAG_MARKET | QUANT_FLAG_TICK
     },
     { // TRADE
         .init = (quant_event_init)quant_event_tick_init,
         .destory = NULL,
         .clone = NULL,
-        .size = sizeof(QuantTradeEvent)
+        .size = sizeof(QuantTradeEvent),
+        .flag = QUANT_FLAG_MARKET | QUANT_FLAG_TICK
     },
 };

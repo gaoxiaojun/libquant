@@ -38,7 +38,7 @@ static QuantEvent* simulator_dequeue(QuantEventBus* bus)
 {
 again:
     if (!quant_event_queue_is_empty(bus->queue[QUANT_EVENT_BUS_MARKET]) && bus->saved_event == NULL) {
-        QuantEvent* e = quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_MARKET]);
+        QuantEvent* e = quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_MARKET], NULL);
 
         datetime_t bus_time = quant_event_bus_get_datetime(bus);
         if (QUANT_EVENT_TIMESTAMP(e) < bus_time) {
@@ -49,7 +49,7 @@ again:
     }
 
     if (!quant_event_queue_is_empty(bus->queue[QUANT_EVENT_BUS_EXECUTION])) {
-        return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_EXECUTION]);
+        return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_EXECUTION], NULL);
     }
 
     // local clock
@@ -57,7 +57,7 @@ again:
         if (bus->saved_event) {
             QuantReminderEvent* r = (QuantReminderEvent*)quant_event_queue_peek(bus->queue[QUANT_EVENT_BUS_LOCAL_CLOCK]);
             if (QUANT_EVENT_TIMESTAMP(r) <= QUANT_EVENT_TIMESTAMP(bus->saved_event)) {
-                return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_LOCAL_CLOCK]);
+                return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_LOCAL_CLOCK], NULL);
             }
         }
     }
@@ -67,18 +67,18 @@ again:
         && bus->saved_event != NULL && QUANT_EVENT_IS_TICK(bus->saved_event)) {
         QuantReminderEvent* r = (QuantReminderEvent*)quant_event_queue_peek(bus->queue[QUANT_EVENT_BUS_EXCHANGE_CLOCK]);
         if (QUANT_EVENT_TIMESTAMP(r) <= QUANT_EVENT_TIMESTAMP(bus->saved_event)) {
-            return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_EXCHANGE_CLOCK]);
+            return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_EXCHANGE_CLOCK], NULL);
         }
     }
 
     // service
     if (!quant_event_queue_is_empty(bus->queue[QUANT_EVENT_BUS_SERVICE])) {
-        return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_SERVICE]);
+        return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_SERVICE], NULL);
     }
 
     // command
     if (!quant_event_queue_is_empty(bus->queue[QUANT_EVENT_BUS_COMMAND])) {
-        return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_COMMAND]);
+        return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_COMMAND], NULL);
     }
 
     if (bus->saved_event) {
@@ -93,14 +93,14 @@ again:
 static QuantEvent* realtime_dequeue(QuantEventBus* bus)
 {
     if (!quant_event_queue_is_empty(bus->queue[QUANT_EVENT_BUS_MARKET]) && bus->saved_event == NULL) {
-        bus->saved_event = quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_MARKET]);
+        bus->saved_event = quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_MARKET], NULL);
     }
 
     // local clock
     if (!quant_event_queue_is_empty(bus->queue[QUANT_EVENT_BUS_LOCAL_CLOCK])) {
         QuantReminderEvent* r = (QuantReminderEvent*)quant_event_queue_peek(bus->queue[QUANT_EVENT_BUS_LOCAL_CLOCK]);
         if (QUANT_EVENT_TIMESTAMP(r) <= quant_event_bus_get_datetime(bus)) {
-            return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_LOCAL_CLOCK]);
+            return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_LOCAL_CLOCK], NULL);
         }
     }
 
@@ -109,23 +109,23 @@ static QuantEvent* realtime_dequeue(QuantEventBus* bus)
         && QUANT_EVENT_IS_TICK(bus->saved_event)) {
         QuantReminderEvent* r = (QuantReminderEvent*)quant_event_queue_peek(bus->queue[QUANT_EVENT_BUS_EXCHANGE_CLOCK]);
         if (QUANT_EVENT_TIMESTAMP(r) <= QUANT_EVENT_TIMESTAMP(bus->saved_event)) {
-            return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_EXCHANGE_CLOCK]);
+            return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_EXCHANGE_CLOCK], NULL);
         }
     }
 
     // execution
     if (!quant_event_queue_is_empty(bus->queue[QUANT_EVENT_BUS_EXECUTION])) {
-        return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_EXECUTION]);
+        return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_EXECUTION], NULL);
     }
 
     // service
     if (!quant_event_queue_is_empty(bus->queue[QUANT_EVENT_BUS_SERVICE])) {
-        return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_SERVICE]);
+        return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_SERVICE], NULL);
     }
 
     // command
     if (!quant_event_queue_is_empty(bus->queue[QUANT_EVENT_BUS_COMMAND])) {
-        return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_COMMAND]);
+        return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_COMMAND], NULL);
     }
 
     if (bus->saved_event) {
@@ -186,6 +186,10 @@ void quant_event_bus_unref(QuantEventBus *bus)
 
 static inline QuantEventBusPipe event_type_to_pipe(QuantEvent *e)
 {
+    if(QUANT_EVENT_IS_MARKET(e))
+        return QUANT_EVENT_BUS_MARKET;
+    if(QUANT_EVENT_IS_EXECUTION(e))
+        return QUANT_EVENT_BUS_EXECUTION;
     if(QUANT_EVENT_IS_REMINDER(e)) {
         QuantReminderEvent *r = (QuantReminderEvent*)e;
         if (r->clock_type == QUANT_REMINDER_EVENT_LOCAL_CLOCK)
@@ -193,10 +197,6 @@ static inline QuantEventBusPipe event_type_to_pipe(QuantEvent *e)
         else
             return QUANT_EVENT_BUS_EXCHANGE_CLOCK;
     }
-    if(QUANT_EVENT_IS_MARKET(e))
-        return QUANT_EVENT_BUS_MARKET;
-    if(QUANT_EVENT_IS_EXECUTION(e))
-        return QUANT_EVENT_BUS_EXECUTION;
     if(QUANT_EVENT_IS_SERVICE(e))
         return QUANT_EVENT_BUS_SERVICE;
     return QUANT_EVENT_BUS_COMMAND;
