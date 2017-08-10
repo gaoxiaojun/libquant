@@ -109,9 +109,6 @@ quant_event_malloc(QuantEventType type);
 QUANT_EXPORT QuantEvent *
 quant_event_new(QuantEventType type, ...);
 
-QUANT_EXPORT QuantEvent *
-quant_event_new_with_time(QuantEventType type, datetime_t time, ...);
-
 QUANT_EXPORT QuantEvent *quant_event_ref(QuantEvent *event);
 
 QUANT_EXPORT void quant_event_unref(QuantEvent *event);

@@ -89,22 +89,11 @@ QuantEvent* quant_event_malloc(QuantEventType type)
 
 QuantEvent *quant_event_new(QuantEventType type, ...)
 {
-    va_list args;
-    va_start(args, type);
-    datetime_t time = datetime_now();
-    QuantEvent *e = quant_event_new_with_time(type, time, args);
-    va_end(args);
-    return e;
-}
-
-QuantEvent *quant_event_new_with_time(QuantEventType type, datetime_t time, ...)
-{
     assert(!event_check_type(type));
     QuantEvent* e = quant_event_malloc(type);
-    e->timestamp = time;
 
     va_list args;
-    va_start(args, time);
+    va_start(args, type);
     quant_event_init init = _eventclassinfo[type].init;
     if (init)
         init(e, args);

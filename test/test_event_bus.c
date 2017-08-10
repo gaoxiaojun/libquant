@@ -31,6 +31,7 @@ int main()
         for (int i = 0; i < TEST_ITER; i++) {
             QuantEvent* e = quant_event_bus_pop(bus);
             if (e) {
+
             g_assert(e->timestamp >= time);
             time = e->timestamp;
             quant_event_unref(e);
