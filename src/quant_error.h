@@ -10,9 +10,9 @@
 
 #include "quant_config.h"
 
-G_BEGIN_DECLS
+QUANT_BEGIN_DECLS
 
 
-G_END_DECLS
+QUANT_END_DECLS
 
 #endif // __QUANT_ERROR_H__

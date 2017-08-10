@@ -13,7 +13,7 @@
 #ifndef __QUANT_ATOMIC_QUEUE_H__
 #define __QUANT_ATOMIC_QUEUE_H__
 
-G_BEGIN_DECLS
+QUANT_BEGIN_DECLS
 
 #define QUANT_TYPE_ATOMIC_QUEUE (quant_atomic_queue_get_type())
 
@@ -55,6 +55,6 @@ guint              quant_atomic_queue_length      (QuantAtomicQueue * queue);
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(QuantAtomicQueue, quant_atomic_queue_unref)
 #endif
 
-G_END_DECLS
+QUANT_END_DECLS
 
 #endif /* __QUANT_ATOMIC_QUEUE_H__ */

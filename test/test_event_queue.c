@@ -8,8 +8,7 @@
 int main()
 {
 
-    QuantEvent *event = malloc(sizeof(QuantEvent));
-    quant_event_init(event);
+    QuantEvent *event = quant_event_new(QUANT_EVENT_ASK);
 
     QuantEventQueue *queue = quant_event_queue_new();
 

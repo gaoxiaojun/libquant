@@ -10,7 +10,7 @@
 
 #include "quant_event.h"
 
-G_BEGIN_DECLS
+QUANT_BEGIN_DECLS
 
 typedef void (*reminder_cb)(datetime_t time, void *data);
 
@@ -26,9 +26,9 @@ typedef struct _QuantReminderEvent {
     void *user_data;
 }QuantReminderEvent;
 
-QUANT_EXPORT QuantReminderEvent *quant_event_new_reminder(QuantReminderEventClockType ctype, reminder_cb callback, void *data);
+QUANT_FUNC QuantEvent *quant_event_reminder_init(QuantEvent *e, QuantReminderEventClockType ctype, reminder_cb callback, void *data);
 
 
-G_END_DECLS
+QUANT_END_DECLS
 
 #endif // QUANT_EVENT_REMINDER_H

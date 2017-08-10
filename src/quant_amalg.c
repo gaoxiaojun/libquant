@@ -1,12 +1,18 @@
 /******************************************************************************
- * Crazy Quantitative Library                                                 *
+ * Quantitative Kit Library                                                   *
  *                                                                            *
  * Copyright (C) 2017 Xiaojun Gao                                             *
  *                                                                            *
- * Distributed under the terms and conditions of the BSD 3-Clause License or  *
- * (at your option) under the terms and conditions of the Boost Software      *
- * License 1.0. See accompanying files LICENSE and LICENSE_ALTERNATIVE.       *
+ * Distributed under the terms and conditions of the BSD 3-Clause License.    *
  ******************************************************************************/
+#define QUANT_AMALG_C
+#define QUANT_CORE
 
-#include "quant_event_loop.h"
 
+#if (defined(__linux__)) && !defined(_GNU_SOURCE)
+#define _GNU_SOURCE
+#endif
+
+#ifndef WINVER
+#define WINVER 0x0501
+#endif

@@ -7,60 +7,46 @@
  ******************************************************************************/
 #include "quant_event_market.h"
 
-static QuantTickEvent * quant_event_new_tick(gint instrument, gint provider, datetime_t exchange_timestamp, double price, glong size)
+QuantEvent * quant_event_tick_init(QuantEvent *e, gint instrument, gint provider, datetime_t exchange_timestamp, double price, glong size)
 {
-    QuantTickEvent * tick = g_new0(QuantTickEvent, 1);
-
-    if(tick) {
-        tick->exchange_timestamp = exchange_timestamp;
-        tick->parent.instrument = instrument;
-        tick->parent.provider = provider;
-        tick->price = price;
-        tick->size = size;
-        QUANT_EVENT_REF_INIT(tick);
-    }
-
-    return tick;
+    QuantTickEvent * tick = (QuantTickEvent *)e;
+    tick->exchange_timestamp = exchange_timestamp;
+    tick->parent.instrument = instrument;
+    tick->parent.provider = provider;
+    tick->price = price;
+    tick->size = size;
+    return e;
 }
 
 
-QuantTickEvent * quant_event_new_ask(gint provider, gint instrument, datetime_t exchange_timestamp, double price, glong size)
+QuantEvent* quant_event_news_init(QuantEvent *e, gint provider, gint instrument, gchar *urgency, gchar *url, gchar *headline, gchar *text)
 {
-    return quant_event_new_tick(instrument, provider, exchange_timestamp, price, size);
+    QuantNewsEvent *news = (QuantNewsEvent *)e;
+
+    news->parent.provider = provider;
+    news->parent.instrument = instrument;
+    news->urgency = g_strdup(urgency);
+    news->headline = g_strdup(headline);
+    news->url = g_strdup(url);
+    news->text = g_strdup(text);
+
+    return e;
 }
 
-QuantTickEvent * quant_event_new_bid(gint provider, gint instrument, datetime_t exchange_timestamp, double price, glong size)
+#define free_if(x) if(x) free(x);
+void quant_event_news_destory(QuantEvent *e)
 {
-    return quant_event_new_tick(instrument, provider, exchange_timestamp, price, size);
+     QuantNewsEvent *news = (QuantNewsEvent *)e;
+     free_if(news->urgency);
+     free_if(news->headline);
+     free_if(news->url);
+     free_if(news->text);
 }
 
-QuantTickEvent * quant_event_new_trade(gint provider, gint instrument, datetime_t exchange_timestamp, double price, glong size)
+QuantEvent* quant_event_fundamental_init(QuantEvent *e, gint provider, gint instrument)
 {
-    return quant_event_new_tick(instrument, provider, exchange_timestamp, price, size);
-}
-
-QuantNewsEvent* quant_event_new_news(gint provider, gint instrument, gchar *urgency, gchar *url, gchar *headline, gchar *text)
-{
-    QuantNewsEvent *news = g_new0(QuantNewsEvent, 1);
-    if (news) {
-        news->parent.provider = provider;
-        news->parent.instrument = instrument;
-        news->urgency = g_strdup(urgency);
-        news->headline = g_strdup(headline);
-        news->url = g_strdup(url);
-        news->text = g_strdup(text);
-        QUANT_EVENT_REF_INIT(news);
-    }
-    return news;
-}
-
-QuantFundamentalEvent* quant_event_new_fundamental(gint provider, gint instrument)
-{
-    QuantFundamentalEvent *fundamental = g_new0(QuantFundamentalEvent, 1);
-    if (fundamental) {
-        fundamental->parent.provider = provider;
-        fundamental->parent.instrument = instrument;
-        QUANT_EVENT_REF_INIT(fundamental);
-    }
-    return fundamental;
+    QuantFundamentalEvent *fundamental = (QuantFundamentalEvent *)e;
+    fundamental->parent.provider = provider;
+    fundamental->parent.instrument = instrument;
+    return e;
 }

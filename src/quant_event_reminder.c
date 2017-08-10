@@ -7,16 +7,13 @@
  ******************************************************************************/
 #include "quant_event_reminder.h"
 
-QuantReminderEvent *quant_event_new_reminder(QuantReminderEventClockType ctype, reminder_cb callback, void *data)
+QuantEvent *quant_event_reminder_init(QuantEvent *e, QuantReminderEventClockType ctype, reminder_cb callback, void *data)
 {
-    QuantReminderEvent *revent = g_new0(QuantReminderEvent, 1);
+    QuantReminderEvent *revent = (QuantReminderEvent *)e;
 
-    if (revent) {
-        revent->clock_type = ctype;
-        revent->callback = callback;
-        revent->user_data = data;
-        QUANT_EVENT_REF_INIT(revent);
-    }
+    revent->clock_type = ctype;
+    revent->callback = callback;
+    revent->user_data = data;
 
-    return revent;
+    return e;
 }

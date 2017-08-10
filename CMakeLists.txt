@@ -163,6 +163,10 @@ find_package(GObject REQUIRED)
 if(GObject_FOUND)
   include_directories(${GObject_INCLUDE_DIRS})
 endif()
+find_package(Jemalloc REQUIRED)
+if(JEMALLOC_FOUND)
+    include_directories(${JEMALLOC_INCLUDE_DIRS})
+endif()
 ################################################################################
 #                       set inclue paths for subprojects                       #
 ################################################################################

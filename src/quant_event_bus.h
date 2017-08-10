@@ -18,7 +18,7 @@
 #include "quant_event_queue.h"
 #include "quant_event_loop.h"
 
-G_BEGIN_DECLS
+QUANT_BEGIN_DECLS
 
 typedef struct _QuantEventBus QuantEventBus;
 
@@ -65,6 +65,6 @@ QuantEvent * quant_event_bus_pop(QuantEventBus *bus);
 QUANT_EXPORT
 timespan_t quant_event_bus_next_timeout(QuantEventBus *bus);
 
-G_END_DECLS
+QUANT_END_DECLS
 
 #endif // QUANT_EVENT_BUS_H

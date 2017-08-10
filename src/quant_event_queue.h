@@ -12,11 +12,12 @@
 #include "adt_tree.h"
 #include "quant_event.h"
 
-G_BEGIN_DECLS
+QUANT_BEGIN_DECLS
 
 /**
  * QuantEventQueue:
  * opaque event queue
+ * NOT THREAD SAFE!
  */
 typedef struct _QuantEventQueue QuantEventQueue;
 
@@ -54,6 +55,6 @@ QUANT_EXPORT int quant_event_queue_remove(QuantEventQueue* q, QuantEvent *e);
 
 QUANT_EXPORT int quant_event_queue_remove_by_id(QuantEventQueue* q, guint64 id);
 
-G_END_DECLS
+QUANT_END_DECLS
 
 #endif // __EVENT_QUEUE_H__

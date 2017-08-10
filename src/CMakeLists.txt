@@ -24,4 +24,4 @@ set(QUANT_CORE_SRC
 )
 
 add_library(quant SHARED  ${QUANT_CORE_HEADER} ${QUANT_CORE_SRC})
-target_link_libraries(quant ${LIBUV_LIBRARY} ${GLib_LIBRARY} ${GObject_LIBRARY})
+target_link_libraries(quant ${LIBUV_LIBRARY} ${GLib_LIBRARY} ${GObject_LIBRARY} ${JEMALLOC_LIBRARIES})

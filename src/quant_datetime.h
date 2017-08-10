@@ -14,7 +14,7 @@
 #include <sys/time.h>
 
 
-G_BEGIN_DECLS
+QUANT_BEGIN_DECLS
 
 /* datetime type represents a date and time.
    that stores the date and time as the number of microsecond intervals since
@@ -50,6 +50,6 @@ QUANT_EXPORT size_t datetime_format(char *dst, size_t len, datetime_t dt, long o
 QUANT_EXPORT int32_t get_timezone_offset(void);
 QUANT_EXPORT datetime_t datetime_now(void);
 
-G_END_DECLS
+QUANT_END_DECLS
 
 #endif // __QUANT_DATETIME_H__

@@ -15,7 +15,7 @@
 #include <glib-object.h>
 #include "quant_config.h"
 
-G_BEGIN_DECLS
+QUANT_BEGIN_DECLS
 
 typedef struct _QuantEventLoop QuantEventLoop;
 
@@ -28,6 +28,6 @@ void quant_event_loop_ref(QuantEventLoop *loop);
 QUANT_EXPORT
 void quant_event_loop_unref(QuantEventLoop *loop);
 
-G_END_DECLS
+QUANT_END_DECLS
 
 #endif // QUANT_LOOP_H

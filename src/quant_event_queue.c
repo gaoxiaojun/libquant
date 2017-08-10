@@ -8,6 +8,7 @@
 #include "quant_event_queue.h"
 #include "adt_tree.h"
 #include <assert.h>
+#include <jemalloc/jemalloc.h>
 
 RB_HEAD(event_tree_s, event_node_s);
 
@@ -45,9 +46,13 @@ int event_node_compare(event_node_t* lhs, event_node_t* rhs)
 RB_GENERATE_STATIC(event_tree_s, event_node_s, rbentry, event_node_compare)
 
 /* for custom node alloc and free */
-static inline event_node_t* node_new() { return g_new0(event_node_t, 1); }
+static inline event_node_t* node_new() {
+        return calloc(1, sizeof(event_node_t));//, 1);
+}
 
-static inline void node_free(event_node_t* node) { g_free(node); }
+static inline void node_free(event_node_t* node) {
+    free(node);
+}
 
 /*  convenient red-black tree operator */
 static inline event_node_t* rbtree_min(QuantEventQueue* q)
