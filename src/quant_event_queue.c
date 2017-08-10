@@ -140,7 +140,7 @@ guint64 quant_event_queue_push(QuantEventQueue* q, QuantEvent* e)
     return node->id;
 }
 
-QuantEvent* quant_event_queue_pop(QuantEventQueue* q, guint64* idptr)
+QuantEvent* quant_event_queue_pop(QuantEventQueue* q)
 {
     QuantEvent *e;
     event_node_t* node = rbtree_min(q);
@@ -149,8 +149,6 @@ QuantEvent* quant_event_queue_pop(QuantEventQueue* q, guint64* idptr)
         e = node->event;
         rbtree_remove(q, node);
         node_free(node);
-        if(idptr)
-            *idptr = node->id;
         return e;
     } else {
         return NULL;

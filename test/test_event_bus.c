@@ -12,7 +12,7 @@
 #include <stdlib.h>
 
 #define TEST_COUNT  10240000
-#define TEST_ITER   10240
+#define TEST_ITER   10240000
 int main()
 {
     datetime_t time = MIN_DATE_TIME;

@@ -25,8 +25,7 @@ int main()
 
 
         for (int i = 0; i < TEST_ITER; i++) {
-            guint64 id;
-            QuantEvent* e = quant_event_queue_pop(queue, &id);
+            QuantEvent* e = quant_event_queue_pop(queue);
             if (e) {
                 if (e->timestamp < time)
             printf("etime = %"G_GUINT64_FORMAT" time=%"G_GUINT64_FORMAT"\n", e->timestamp, time);
@@ -36,7 +35,7 @@ int main()
             }
         }
     }
-    QuantEvent* e = quant_event_queue_pop(queue, NULL);
+    QuantEvent* e = quant_event_queue_pop(queue);
     g_assert(e == NULL);
 
     return 0;

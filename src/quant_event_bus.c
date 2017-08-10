@@ -38,7 +38,7 @@ static QuantEvent* simulator_dequeue(QuantEventBus* bus)
 {
 again:
     if (!quant_event_queue_is_empty(bus->queue[QUANT_EVENT_BUS_MARKET]) && bus->saved_event == NULL) {
-        QuantEvent* e = quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_MARKET], NULL);
+        QuantEvent* e = quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_MARKET]);
 
         datetime_t bus_time = quant_event_bus_get_datetime(bus);
         if (QUANT_EVENT_TIMESTAMP(e) < bus_time) {
@@ -49,7 +49,7 @@ again:
     }
 
     if (!quant_event_queue_is_empty(bus->queue[QUANT_EVENT_BUS_EXECUTION])) {
-        return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_EXECUTION], NULL);
+        return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_EXECUTION]);
     }
 
     // local clock
@@ -57,7 +57,7 @@ again:
         if (bus->saved_event) {
             QuantReminderEvent* r = (QuantReminderEvent*)quant_event_queue_peek(bus->queue[QUANT_EVENT_BUS_LOCAL_CLOCK]);
             if (QUANT_EVENT_TIMESTAMP(r) <= QUANT_EVENT_TIMESTAMP(bus->saved_event)) {
-                return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_LOCAL_CLOCK], NULL);
+                return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_LOCAL_CLOCK]);
             }
         }
     }
@@ -67,18 +67,18 @@ again:
         && bus->saved_event != NULL && QUANT_EVENT_IS_TICK(bus->saved_event)) {
         QuantReminderEvent* r = (QuantReminderEvent*)quant_event_queue_peek(bus->queue[QUANT_EVENT_BUS_EXCHANGE_CLOCK]);
         if (QUANT_EVENT_TIMESTAMP(r) <= QUANT_EVENT_TIMESTAMP(bus->saved_event)) {
-            return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_EXCHANGE_CLOCK], NULL);
+            return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_EXCHANGE_CLOCK]);
         }
     }
 
     // service
     if (!quant_event_queue_is_empty(bus->queue[QUANT_EVENT_BUS_SERVICE])) {
-        return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_SERVICE], NULL);
+        return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_SERVICE]);
     }
 
     // command
     if (!quant_event_queue_is_empty(bus->queue[QUANT_EVENT_BUS_COMMAND])) {
-        return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_COMMAND], NULL);
+        return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_COMMAND]);
     }
 
     if (bus->saved_event) {
@@ -93,14 +93,14 @@ again:
 static QuantEvent* realtime_dequeue(QuantEventBus* bus)
 {
     if (!quant_event_queue_is_empty(bus->queue[QUANT_EVENT_BUS_MARKET]) && bus->saved_event == NULL) {
-        bus->saved_event = quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_MARKET], NULL);
+        bus->saved_event = quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_MARKET]);
     }
 
     // local clock
     if (!quant_event_queue_is_empty(bus->queue[QUANT_EVENT_BUS_LOCAL_CLOCK])) {
         QuantReminderEvent* r = (QuantReminderEvent*)quant_event_queue_peek(bus->queue[QUANT_EVENT_BUS_LOCAL_CLOCK]);
         if (QUANT_EVENT_TIMESTAMP(r) <= quant_event_bus_get_datetime(bus)) {
-            return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_LOCAL_CLOCK], NULL);
+            return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_LOCAL_CLOCK]);
         }
     }
 
@@ -109,23 +109,23 @@ static QuantEvent* realtime_dequeue(QuantEventBus* bus)
         && QUANT_EVENT_IS_TICK(bus->saved_event)) {
         QuantReminderEvent* r = (QuantReminderEvent*)quant_event_queue_peek(bus->queue[QUANT_EVENT_BUS_EXCHANGE_CLOCK]);
         if (QUANT_EVENT_TIMESTAMP(r) <= QUANT_EVENT_TIMESTAMP(bus->saved_event)) {
-            return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_EXCHANGE_CLOCK], NULL);
+            return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_EXCHANGE_CLOCK]);
         }
     }
 
     // execution
     if (!quant_event_queue_is_empty(bus->queue[QUANT_EVENT_BUS_EXECUTION])) {
-        return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_EXECUTION], NULL);
+        return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_EXECUTION]);
     }
 
     // service
     if (!quant_event_queue_is_empty(bus->queue[QUANT_EVENT_BUS_SERVICE])) {
-        return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_SERVICE], NULL);
+        return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_SERVICE]);
     }
 
     // command
     if (!quant_event_queue_is_empty(bus->queue[QUANT_EVENT_BUS_COMMAND])) {
-        return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_COMMAND], NULL);
+        return quant_event_queue_pop(bus->queue[QUANT_EVENT_BUS_COMMAND]);
     }
 
     if (bus->saved_event) {
