@@ -8,14 +8,11 @@
 int main()
 {
     datetime_t time = MIN_DATE_TIME;
-    datetime_t create_time = MIN_DATE_TIME;
     QuantEventQueue * queue = quant_event_queue_new();
     for (int j = 0; j < TEST_COUNT / TEST_ITER ; j++) {
         for (int i = 0; i < TEST_ITER; i++) {
             QuantEvent* event = (QuantEvent*)quant_event_new(QUANT_EVENT_ASK,0, 1, MIN_DATE_TIME, i, i);
             event->timestamp = datetime_now();
-            g_assert(event->timestamp >= create_time);
-            create_time = event->timestamp;
 
             quant_event_ref(event);
             quant_event_queue_push(queue, event);

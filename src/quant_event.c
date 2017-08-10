@@ -90,7 +90,6 @@ QuantEvent* quant_event_malloc(QuantEventType type)
 
 QuantEvent *quant_event_new(QuantEventType type, ...)
 {
-    assert(!event_check_type(type));
     QuantEvent* e = quant_event_malloc(type);
 
     va_list args;
@@ -104,7 +103,7 @@ QuantEvent *quant_event_new(QuantEventType type, ...)
 }
 
 QuantEventClassInfo _eventclassinfo[QUANT_EVENT_LAST] = {
-    {// REMINDER
+    { // REMINDER
         .init = (quant_event_init)quant_event_reminder_init,
         .destory = NULL,
         .clone = NULL,
